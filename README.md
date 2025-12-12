@@ -1,173 +1,62 @@
-# Module Lab: Building Full CRUD RESTful APIs with Flask
+# Events API Lab
 
-## Learning Goals
-
-- Implement RESTful API endpoints using Flask.
-- Handle HTTP POST, PATCH, and DELETE methods to manage resource data.
-- Accept and process JSON input using `request.get_json()`.
-- Simulate persistent data using in-memory Python objects.
-- Follow RESTful route conventions and return structured JSON responses.
-
-## Introduction
-
-In this lab, you will build a **Full CRUD API** to manage a list of events. The API will allow users to:
-
-- Create new events using `POST`
-- Update existing events using `PATCH`
-- Delete events using `DELETE`
-
-You’ll simulate database-like behavior with in-memory Python class objects and respond to all client requests with properly formatted JSON and appropriate status codes.
-
-This lab reinforces essential backend development skills including route design, data mutation, error handling, and RESTful conventions.
-
-## Setup Instructions
-
-### Fork and Clone the Repository
-
-1. Go to the provided GitHub repository link.
-2. Fork the repository to your GitHub account.
-3. Clone the forked repository to your local machine:
-
-```bash
-git clone <repo-url>
-cd course-8-module-5-flask-full-crud-api-lab
-```
-
-### Install Dependencies
-
-Ensure Python is installed:
-
-```bash
-python --version
-```
-
-Install Flask and dependencies using pipenv:
-
-```bash
-pipenv install
-pipenv shell
-```
-
-Or with pip:
-
-```bash
-pip install flask
-```
-
-## Tasks
-
-### Task 1: Define the Problem
-
-You’re building a basic event management API. It should:
-
-- Accept event creation via `POST /events`
-- Allow updating event titles via `PATCH /events/<id>`
-- Delete events using `DELETE /events/<id>`
-- Respond with structured JSON and appropriate HTTP status codes
+## Overview
+This lab introduces RESTful write operations using Flask.
+The focus is on handling POST, PATCH, and DELETE requests,
+modifying in-memory data, and returning appropriate HTTP
+status codes based on the result of each operation.
 
 ---
 
-### Task 2: Determine the Design
+## Project Structure
 
-The Flask API should be structured as follows:
+events-api-lab/
+events-api-lab/app.py
+events-api-lab/testing/
+events-api-lab/testing/test_app.py
+events-api-lab/pytest.ini
+events-api-lab/README.md
 
-- Use `@app.route()` with correct HTTP method decorators
-- Accept input using `request.get_json()`
-- Represent data using a custom `Event` class
-- Store events in an in-memory list
-- Use `jsonify()` for consistent JSON responses
 
----
+- app.py contains the Flask application and route logic
+- testing/test_app.py holds automated tests for each endpoint
+- pytest.ini configures pytest to correctly locate application modules
 
-### Task 3: Develop the Code
+## Application Overview
+The Flask app provides three routes:
 
-Create `app.py` and start with the following structure:
+/events (POST)
+- Accepts JSON input to create a new event.
+- Automatically assigns a new ID to the event.
+- Returns the created event with a 201 Created response.
 
-```python
-from flask import Flask, jsonify, request
+/events/<event_id> (PATCH)
+- Accepts JSON input to update the title of an existing event.
+- Returns the updated event if found.
+- Returns a 404 Not Found response if the event does not exist.
 
-app = Flask(__name__)
+/events/<event_id> (DELETE)
+- Removes an event from the in-memory list.
+- Returns a 204 No Content response if successful.
+- Returns a 404 Not Found response if the event does not exist.
 
-# Event class
-class Event:
-    def __init__(self, id, title):
-        self.id = id
-        self.title = title
+All responses follow RESTful conventions and use JSON where applicable.
 
-    def to_dict(self):
-        return {"id": self.id, "title": self.title}
+## Key Features
+- RESTful write operations using POST, PATCH, and DELETE
+- In-memory data storage for testing purposes
+- Proper HTTP status code usage (201, 200, 204, 404)
+- JSON request parsing and response formatting
+- Automated testing using Flask’s test client and pytest
 
-# In-memory data store
-events = [
-    Event(1, "Tech Meetup"),
-    Event(2, "Python Workshop")
-]
+## Running the Tests
 
-# TODO: POST /events - Create a new event from JSON input
-# TODO: PATCH /events/<id> - Update the title of an event
-# TODO: DELETE /events/<id> - Remove an event from the list
+From the project root use the following:
+- python -m pytest
 
-if __name__ == "__main__":
-    app.run(debug=True)
-```
+## General project notes
 
----
-
-### Task 4: Test the API
-
-Start the Flask development server:
-
-```bash
-python app.py
-```
-
-Test your endpoints using Postman or curl:
-
-- `POST http://localhost:5000/events`
-  - Body: `{ "title": "Hackathon" }`
-- `PATCH http://localhost:5000/events/1`
-  - Body: `{ "title": "Hackathon 2025" }`
-- `DELETE http://localhost:5000/events/2`
-
----
-
-## Best Practices
-
-- Use RESTful nouns in routes (e.g., `/events`)
-- Validate incoming JSON and handle missing keys gracefully
-- Use helper functions to reduce code repetition
-- Return:
-  - `201 Created` for successful POST
-  - `200 OK` or `204 No Content` for PATCH and DELETE
-  - `404 Not Found` if a resource doesn't exist
-- Include inline comments to explain logic
-
----
-
-## Considerations
-
-**1. Input Validation**
-- Ensure the `title` field is provided.
-- Return a `400 Bad Request` if missing.
-
-**2. Event Not Found**
-- Return `404 Not Found` with a clear message when the event ID doesn't exist.
-
-**3. Reusable Logic**
-- Consider writing a helper function to look up events by ID.
-
-**4. Scalability**
-- While using a single file works here, separate concerns into modules as your API grows.
-
----
-
-## Conclusion
-
-After completing this lab, you will:
-
-✅ Know how to handle incoming JSON with Flask  
-✅ Build routes that implement full CRUD behavior  
-✅ Simulate persistent resource changes in memory  
-✅ Return proper HTTP status codes and structured responses  
-
-This is a critical step in your backend developer journey. Next up: persistent databases!
+Project passed through ChatGPT to identify logic issues, validate
+RESTful behavior, and assist in drafting this README.md file.
+The README.md was reviewed and edited for clarity, consistency,
+and alignment with lab requirements prior to submission.
