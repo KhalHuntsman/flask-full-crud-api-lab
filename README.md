@@ -1,10 +1,10 @@
 # Events API Lab
 
 ## Overview
-This lab introduces RESTful write operations using Flask.
-The focus is on handling POST, PATCH, and DELETE requests,
-modifying in-memory data, and returning appropriate HTTP
-status codes based on the result of each operation.
+This lab expands on RESTful write operations using Flask by introducing
+input validation, reusable lookup logic, and consistent error handling.
+The focus is on building reliable POST, PATCH, and DELETE endpoints while
+maintaining clean, testable code.
 
 ---
 
@@ -27,13 +27,17 @@ The Flask app provides three routes:
 
 /events (POST)
 - Accepts JSON input to create a new event.
+- Validates that a non-empty title is provided.
 - Automatically assigns a new ID to the event.
 - Returns the created event with a 201 Created response.
+- Returns a 400 Bad Request response if input is invalid.
 
 /events/<event_id> (PATCH)
 - Accepts JSON input to update the title of an existing event.
+- Validates that a non-empty title is provided.
 - Returns the updated event if found.
 - Returns a 404 Not Found response if the event does not exist.
+- Returns a 400 Bad Request response if input is invalid.
 
 /events/<event_id> (DELETE)
 - Removes an event from the in-memory list.
@@ -44,9 +48,11 @@ All responses follow RESTful conventions and use JSON where applicable.
 
 ## Key Features
 - RESTful write operations using POST, PATCH, and DELETE
+- Input validation to prevent invalid data
+- Reusable helper logic for event lookup
+- Consistent error handling for missing resources
+- Proper HTTP status code usage (201, 200, 204, 400, 404)
 - In-memory data storage for testing purposes
-- Proper HTTP status code usage (201, 200, 204, 404)
-- JSON request parsing and response formatting
 - Automated testing using Flask’s test client and pytest
 
 ## Running the Tests
@@ -57,6 +63,6 @@ From the project root use the following:
 ## General project notes
 
 Project passed through ChatGPT to identify logic issues, validate
-RESTful behavior, and assist in drafting this README.md file.
-The README.md was reviewed and edited for clarity, consistency,
-and alignment with lab requirements prior to submission.
+RESTful behavior, and assist in refining validation and error-handling
+patterns. The README.md was reviewed and edited for clarity,
+consistency, and alignment with lab requirements prior to submission.
